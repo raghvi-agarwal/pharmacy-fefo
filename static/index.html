@@ -2,261 +2,365 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PharmFEFO — Smart Batch & FEFO Dispensing</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans min-h-screen">
 
-  <!-- TOP NAV -->
+  <!-- NAVBAR -->
   <nav class="bg-white border-b border-slate-200 px-6 py-4 flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center gap-2">
       <span class="text-2xl">💊</span>
       <h1 class="text-xl font-bold tracking-tight text-indigo-600">PharmFEFO</h1>
     </div>
-    <div id="nav-actions" class="flex items-center gap-4">
-      <button onclick="showView('landing')" class="text-sm font-semibold hover:text-indigo-600">Product Info</button>
-      <button onclick="showView('auth')" id="auth-tab-btn" class="text-sm font-semibold hover:text-indigo-600">Login / Register</button>
-      <button onclick="logout()" id="logout-btn" class="hidden text-sm font-semibold text-rose-600 hover:underline">Logout</button>
+    <div id="user-pill" class="text-sm font-semibold text-slate-600 hidden">
+      Logged in as: <span id="current-username" class="text-indigo-600"></span>
+      <button onclick="logout()" class="ml-4 text-rose-600 hover:underline">Logout</button>
     </div>
   </nav>
 
-  <!-- VIEW 1: ONE-PAGE LANDING PAGE -->
-  <section id="view-landing" class="max-w-5xl mx-auto px-6 py-12">
-    <header class="text-center py-10 bg-indigo-50 rounded-2xl border border-indigo-100 mb-12">
-      <h1 class="text-4xl font-black text-slate-900 mb-3">Oldest In-Date First. Zero Expired Out.</h1>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">
-        A reliable, compliance-first inventory management platform designed for neighborhood pharmacies to automate FEFO dispensing and prevent hazardous medicine loss.
-      </p>
-      <button onclick="showView('auth')" class="mt-6 bg-indigo-600 text-white font-semibold px-6 py-3 rounded-lg shadow hover:bg-indigo-700">Access Portal</button>
-    </header>
+  <div class="max-w-6xl mx-auto px-6 py-8 space-y-10">
 
-    <div class="grid md:grid-cols-3 gap-6 mb-12">
-      <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
-        <h3 class="font-bold text-lg mb-2 text-indigo-600">Target Audience</h3>
-        <p class="text-slate-600 text-sm">Community pharmacies, clinics, and hospital dispensaries running on manual tracking prone to human error.</p>
+    <!-- ONE-PAGE PRODUCT LANDING SECTION -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Autonomous Inventory</span>
+        <h2 class="text-3xl font-extrabold text-slate-900 mt-3 mb-2">Oldest In-Date First. Zero Expired Out.</h2>
+        <p class="text-slate-600 text-sm">
+          A compliance-first pharmacy operating system that automates First-Expiry-First-Out (FEFO) dispensing, guarantees no expired batch reaches patients, and alerts staff ahead of shelf-life expiry.
+        </p>
       </div>
-      <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
-        <h3 class="font-bold text-lg mb-2 text-indigo-600">Core Problem Solved</h3>
-        <p class="text-slate-600 text-sm">Ensures older batches are consumed first, guarantees zero expired stock reaches patients, and eliminates inventory write-offs.</p>
-      </div>
-      <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
-        <h3 class="font-bold text-lg mb-2 text-indigo-600">Key Capabilities</h3>
-        <p class="text-slate-600 text-sm">Automated FEFO queueing, instant sellable stock counts, early expiry warnings, and searchable audit logs.</p>
-      </div>
-    </div>
 
-    <div class="bg-white border border-slate-200 rounded-xl p-8 mb-12">
-      <h2 class="text-2xl font-bold mb-4">Three Features on the Roadmap</h2>
-      <ul class="space-y-3 text-slate-700 list-disc list-inside">
-        <li><strong>Automated Wholesaler Reorders:</strong> Auto-generate purchase orders when in-date stock drops below a dynamic safety threshold.</li>
-        <li><strong>Barcode / GS1 Scanner Integration:</strong> Scan standard pharmaceutical 2D DataMatrix codes during receipt and dispensing to eliminate human entry errors.</li>
-        <li><strong>Regulatory Compliance Audit Exports:</strong> One-click export of signed audit trails and quarantine histories for health authorities.</li>
-      </ul>
-    </div>
-  </section>
+      <div class="grid md:grid-cols-3 gap-6 mb-8 text-sm">
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+          <h3 class="font-bold text-indigo-600 mb-1">🎯 Target Audience</h3>
+          <p class="text-slate-600">Neighborhood pharmacies, hospital dispensary counters, and clinics managing multi-batch inventory.</p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+          <h3 class="font-bold text-indigo-600 mb-1">🛡️ Problem Solved</h3>
+          <p class="text-slate-600">Eliminates dangerous accidental dispensing of expired stock and minimizes shelf write-off financial losses.</p>
+        </div>
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
+          <h3 class="font-bold text-indigo-600 mb-1">⚡ Key Features</h3>
+          <p class="text-slate-600">Automatic FEFO multi-batch splitting, real-time in-date stock ledger, 30-day early warnings, and audit logging.</p>
+        </div>
+      </div>
 
-  <!-- VIEW 2: AUTH -->
-  <section id="view-auth" class="hidden max-w-md mx-auto px-6 py-16">
-    <div class="bg-white p-8 border border-slate-200 rounded-2xl shadow-sm">
-      <h2 class="text-2xl font-bold mb-6 text-center text-slate-800">Pharmacist Portal</h2>
-      <div class="space-y-4">
+      <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-100 text-xs text-slate-700">
+        <span class="font-bold uppercase tracking-wider text-indigo-800">Future Roadmap:</span>
+        <ol class="list-decimal list-inside mt-1 space-y-1 text-slate-600">
+          <li><strong>Automated Wholesaler Reordering:</strong> Auto-dispatch purchase orders when valid stock hits safety buffer.</li>
+          <li><strong>2D GS1 Barcode Matrix Scanning:</strong> Direct hardware scanner support for single-second batch intake.</li>
+          <li><strong>Regulatory Audit Exports:</strong> Export encrypted PDF compliance reports for pharmaceutical regulatory reviews.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- AUTHENTICATION CARD -->
+    <section id="auth-section" class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm max-w-md mx-auto">
+      <h3 class="text-lg font-bold text-slate-800 text-center mb-4">Pharmacist Login / Register</h3>
+      <div class="space-y-3">
         <div>
-          <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Username</label>
-          <input id="auth-username" type="text" class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Username</label>
+          <input id="auth-username" type="text" placeholder="Enter username (e.g. admin)" class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Password</label>
-          <input id="auth-password" type="password" class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          <label class="block text-xs font-semibold text-slate-500 mb-1">Password</label>
+          <input id="auth-password" type="password" placeholder="Enter password (e.g. admin123)" class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
         </div>
         <div class="flex gap-3 pt-2">
-          <button onclick="handleLogin()" class="flex-1 bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm hover:bg-indigo-700">Login</button>
-          <button onclick="handleRegister()" class="flex-1 bg-slate-100 text-slate-700 font-semibold py-2 rounded-lg text-sm hover:bg-slate-200">Register</button>
+          <button onclick="handleLogin()" class="flex-1 bg-indigo-600 text-white font-semibold py-2 rounded-lg text-sm hover:bg-indigo-700 transition">Login</button>
+          <button onclick="handleRegister()" class="flex-1 bg-slate-100 text-slate-700 font-semibold py-2 rounded-lg text-sm hover:bg-slate-200 transition">Register</button>
         </div>
-        <p id="auth-error" class="text-rose-600 text-xs text-center hidden"></p>
+        <div id="auth-message" class="text-xs text-center font-medium mt-2 hidden"></div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- VIEW 3: INVENTORY DASHBOARD -->
-  <section id="view-dashboard" class="hidden max-w-6xl mx-auto px-6 py-8">
-    <!-- EXPIRY ALERTS BANNER -->
-    <div id="alerts-container" class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl hidden">
-      <h3 class="text-sm font-bold text-amber-800 uppercase tracking-wider mb-2">⚠️ Batches Expiring Within 30 Days</h3>
-      <div id="alerts-list" class="grid md:grid-cols-3 gap-3 text-xs text-amber-900"></div>
-    </div>
+    <!-- ACTIVE PHARMACIST WORKSPACE (DASHBOARD) -->
+    <section id="dashboard-section" class="space-y-6 hidden">
 
-    <!-- ACTIONS GRID -->
-    <div class="grid md:grid-cols-2 gap-6 mb-8">
-      <!-- Add Batch -->
-      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <h3 class="text-md font-bold mb-3">Add Stock Batch</h3>
-        <form onsubmit="handleAddBatch(event)" class="space-y-3">
-          <input id="b-name" type="text" placeholder="Medicine Name (e.g. Paracetamol 500mg)" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
-          <div class="grid grid-cols-3 gap-2">
-            <input id="b-code" type="text" placeholder="Batch ID" required class="border border-slate-300 px-3 py-2 rounded text-sm">
-            <input id="b-qty" type="number" placeholder="Qty" min="1" required class="border border-slate-300 px-3 py-2 rounded text-sm">
-            <input id="b-exp" type="date" required class="border border-slate-300 px-3 py-2 rounded text-sm">
-          </div>
-          <button type="submit" class="w-full bg-slate-900 text-white py-2 rounded font-semibold text-sm hover:bg-slate-800">Receive Batch</button>
-        </form>
-      </div>
-
-      <!-- Dispense Medicine -->
-      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <h3 class="text-md font-bold mb-3">FEFO Dispenser</h3>
-        <form onsubmit="handleDispense(event)" class="space-y-3">
-          <input id="d-name" type="text" placeholder="Medicine Name (exact or full)" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
-          <input id="d-qty" type="number" placeholder="Quantity Needed" min="1" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
-          <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-sm hover:bg-indigo-700">Dispense (Auto FEFO)</button>
-        </form>
-        <div id="dispense-result" class="mt-2 text-xs font-mono p-2 bg-slate-100 rounded hidden"></div>
-      </div>
-    </div>
-
-    <!-- SEARCH & CONTROLS -->
-    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-8">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
-        <div class="w-full md:w-1/3">
-          <input id="search-input" oninput="debounceFetch()" type="text" placeholder="Search medicine..." class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm">
-        </div>
-        <div class="flex items-center gap-2">
-          <label class="text-xs font-semibold text-slate-500">Sort By:</label>
-          <select id="sort-by" onchange="fetchBatches()" class="border border-slate-300 text-sm rounded px-2 py-1.5">
-            <option value="expiry_date">Expiry Date</option>
-            <option value="medicine_name">Medicine Name</option>
-            <option value="quantity">Quantity</option>
-          </select>
-          <select id="sort-order" onchange="fetchBatches()" class="border border-slate-300 text-sm rounded px-2 py-1.5">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- BATCH TABLE -->
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-slate-50 border-y border-slate-200 text-slate-500 text-xs uppercase">
-            <tr>
-              <th class="p-3">Medicine</th>
-              <th class="p-3">Batch ID</th>
-              <th class="p-3">Quantity</th>
-              <th class="p-3">Expiry Date</th>
-              <th class="p-3">Status</th>
-            </tr>
-          </thead>
-          <tbody id="batch-table-body" class="divide-y divide-slate-200"></tbody>
-        </table>
-      </div>
-
-      <!-- PAGINATION -->
-      <div class="flex justify-between items-center mt-4 text-sm text-slate-600">
-        <span id="page-info">Page 1 of 1</span>
+      <!-- QUICK IN-DATE CHECKER (Addresses Storyline prompt directly) -->
+      <div class="bg-indigo-900 text-white rounded-xl p-5 shadow-sm">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-indigo-200 mb-1">🔍 Instant In-Date Stock Inquiry</h3>
+        <p class="text-xs text-indigo-300 mb-3">Answers customer questions like: <em>"Do we have Paracetamol in date?"</em></p>
         <div class="flex gap-2">
-          <button id="prev-page" onclick="changePage(-1)" class="px-3 py-1 border rounded disabled:opacity-40">Previous</button>
-          <button id="next-page" onclick="changePage(1)" class="px-3 py-1 border rounded disabled:opacity-40">Next</button>
+          <input id="quick-check-input" type="text" placeholder="Enter medicine name (e.g. Paracetamol 500mg)" class="flex-1 px-3 py-2 rounded-lg text-slate-900 text-sm outline-none">
+          <button onclick="handleQuickCheck()" class="bg-indigo-500 hover:bg-indigo-400 font-semibold px-4 py-2 rounded-lg text-sm transition">Check Availability</button>
+        </div>
+        <div id="quick-check-result" class="mt-3 text-sm font-medium hidden"></div>
+      </div>
+
+      <!-- NEAR-EXPIRY WARNING BANNER -->
+      <div id="alerts-container" class="p-4 bg-amber-50 border border-amber-200 rounded-xl hidden">
+        <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2">⚠️ Near-Expiry Alerts (Within 30 Days)</h4>
+        <div id="alerts-list" class="grid md:grid-cols-3 gap-3 text-xs text-amber-900"></div>
+      </div>
+
+      <!-- WORKFLOW ACTIONS -->
+      <div class="grid md:grid-cols-2 gap-6">
+        
+        <!-- Intake Batch -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+          <h3 class="text-base font-bold mb-3">📦 Stock Intake (Add Batch)</h3>
+          <form onsubmit="handleAddBatch(event)" class="space-y-3">
+            <input id="b-name" type="text" placeholder="Medicine Name (e.g. Paracetamol 500mg)" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
+            <div class="grid grid-cols-3 gap-2">
+              <input id="b-code" type="text" placeholder="Batch ID" required class="border border-slate-300 px-3 py-2 rounded text-sm">
+              <input id="b-qty" type="number" placeholder="Qty" min="1" required class="border border-slate-300 px-3 py-2 rounded text-sm">
+              <input id="b-exp" type="date" required class="border border-slate-300 px-3 py-2 rounded text-sm">
+            </div>
+            <button type="submit" class="w-full bg-slate-900 text-white py-2 rounded font-semibold text-sm hover:bg-slate-800">Add Stock Batch</button>
+          </form>
+          <div id="batch-add-msg" class="text-xs mt-2 font-medium text-emerald-600 hidden"></div>
+        </div>
+
+        <!-- FEFO Dispenser -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+          <h3 class="text-base font-bold mb-3">⚡ FEFO Dispenser</h3>
+          <form onsubmit="handleDispense(event)" class="space-y-3">
+            <input id="d-name" type="text" placeholder="Medicine Name (e.g. Paracetamol 500mg)" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
+            <input id="d-qty" type="number" placeholder="Quantity Needed" min="1" required class="w-full border border-slate-300 px-3 py-2 rounded text-sm">
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded font-semibold text-sm hover:bg-indigo-700">Dispense (Strict FEFO)</button>
+          </form>
+          <div id="dispense-result" class="mt-3 text-xs font-mono p-3 bg-slate-100 rounded hidden overflow-x-auto"></div>
         </div>
       </div>
-    </div>
-  </section>
+
+      <!-- INVENTORY TABLE WITH SEARCH, SORT, & PAGINATION -->
+      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-4">
+          <div class="w-full md:w-1/3">
+            <input id="search-input" oninput="debounceFetch()" type="text" placeholder="Search medicine..." class="w-full border border-slate-300 px-3 py-2 rounded-lg text-sm">
+          </div>
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-semibold text-slate-500">Sort By:</label>
+            <select id="sort-by" onchange="fetchBatches()" class="border border-slate-300 text-sm rounded px-2 py-1.5">
+              <option value="expiry_date">Expiry Date</option>
+              <option value="medicine_name">Medicine Name</option>
+              <option value="quantity">Quantity</option>
+            </select>
+            <select id="sort-order" onchange="fetchBatches()" class="border border-slate-300 text-sm rounded px-2 py-1.5">
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 border-y border-slate-200 text-slate-500 text-xs uppercase">
+              <tr>
+                <th class="p-3">Medicine</th>
+                <th class="p-3">Batch ID</th>
+                <th class="p-3">Quantity</th>
+                <th class="p-3">Expiry Date</th>
+                <th class="p-3">Status</th>
+              </tr>
+            </thead>
+            <tbody id="batch-table-body" class="divide-y divide-slate-200">
+              <tr><td colspan="5" class="p-4 text-center text-slate-400">No batches recorded yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-between items-center mt-4 text-sm text-slate-600">
+          <span id="page-info">Page 1 of 1</span>
+          <div class="flex gap-2">
+            <button id="prev-page" onclick="changePage(-1)" class="px-3 py-1 border rounded disabled:opacity-40">Previous</button>
+            <button id="next-page" onclick="changePage(1)" class="px-3 py-1 border rounded disabled:opacity-40">Next</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DISPENSE AUDIT TRAIL LOG -->
+      <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+        <h3 class="text-base font-bold mb-3">📜 Recent Dispense History</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 border-y border-slate-200 text-slate-500 uppercase">
+              <tr>
+                <th class="p-2.5">Time</th>
+                <th class="p-2.5">Medicine</th>
+                <th class="p-2.5">Batch Code</th>
+                <th class="p-2.5">Units Dispensed</th>
+              </tr>
+            </thead>
+            <tbody id="logs-table-body" class="divide-y divide-slate-200">
+              <tr><td colspan="4" class="p-3 text-center text-slate-400">No dispense operations recorded yet.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
 
   <script>
     let token = localStorage.getItem("token") || null;
+    let username = localStorage.getItem("username") || null;
     let currentPage = 1;
     let totalPages = 1;
-    let searchDebounceTimer = null;
+    let searchTimer = null;
 
-    function showView(view) {
-      document.getElementById('view-landing').classList.toggle('hidden', view !== 'landing');
-      document.getElementById('view-auth').classList.toggle('hidden', view !== 'auth');
-      document.getElementById('view-dashboard').classList.toggle('hidden', view !== 'dashboard');
-      document.getElementById('logout-btn').classList.toggle('hidden', !token);
-      document.getElementById('auth-tab-btn').classList.toggle('hidden', !!token);
+    function updateView() {
+      const authSec = document.getElementById("auth-section");
+      const dashSec = document.getElementById("dashboard-section");
+      const userPill = document.getElementById("user-pill");
+
+      if (token) {
+        authSec.classList.add("hidden");
+        dashSec.classList.remove("hidden");
+        userPill.classList.remove("hidden");
+        document.getElementById("current-username").innerText = username || "Pharmacist";
+        loadDashboard();
+      } else {
+        authSec.classList.remove("hidden");
+        dashSec.classList.add("hidden");
+        userPill.classList.add("hidden");
+      }
     }
 
-    if (token) showView('dashboard'); else showView('landing');
+    function showAuthMsg(msg, isError) {
+      const el = document.getElementById("auth-message");
+      el.innerText = msg;
+      el.className = isError ? "text-xs text-center font-medium mt-2 text-rose-600" : "text-xs text-center font-medium mt-2 text-emerald-600";
+      el.classList.remove("hidden");
+    }
 
     async function handleRegister() {
-      const u = document.getElementById('auth-username').value;
-      const p = document.getElementById('auth-password').value;
-      const res = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: u, password: p })
-      });
-      const data = await res.json();
-      if (!res.ok) alert(data.detail || 'Registration failed');
-      else { alert('Account created! Logging in...'); handleLogin(); }
+      const u = document.getElementById("auth-username").value.trim();
+      const p = document.getElementById("auth-password").value.trim();
+      if (!u || !p) return showAuthMsg("Please fill in username and password", true);
+
+      try {
+        const res = await fetch("/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showAuthMsg(data.detail || "Registration failed", true);
+        } else {
+          showAuthMsg("Registered successfully! Logging in...", false);
+          handleLogin();
+        }
+      } catch (err) {
+        showAuthMsg("Failed to connect to backend server.", true);
+      }
     }
 
     async function handleLogin() {
-      const u = document.getElementById('auth-username').value;
-      const p = document.getElementById('auth-password').value;
-      const form = new URLSearchParams();
-      form.append('username', u);
-      form.append('password', p);
+      const u = document.getElementById("auth-username").value.trim();
+      const p = document.getElementById("auth-password").value.trim();
+      if (!u || !p) return showAuthMsg("Please fill in username and password", true);
 
-      const res = await fetch('/api/auth/login', { method: 'POST', body: form });
-      const data = await res.json();
-      if (!res.ok) {
-        document.getElementById('auth-error').innerText = data.detail || 'Login failed';
-        document.getElementById('auth-error').classList.remove('hidden');
-      } else {
-        token = data.access_token;
-        localStorage.setItem("token", token);
-        showView('dashboard');
-        loadAllData();
+      const form = new URLSearchParams();
+      form.append("username", u);
+      form.append("password", p);
+
+      try {
+        const res = await fetch("/api/auth/login", { method: "POST", body: form });
+        const data = await res.json();
+        if (!res.ok) {
+          showAuthMsg(data.detail || "Invalid username or password", true);
+        } else {
+          token = data.access_token;
+          username = u;
+          localStorage.setItem("token", token);
+          localStorage.setItem("username", username);
+          updateView();
+        }
+      } catch (err) {
+        showAuthMsg("Failed to connect to backend server.", true);
       }
     }
 
     function logout() {
       token = null;
+      username = null;
       localStorage.removeItem("token");
-      showView('landing');
+      localStorage.removeItem("username");
+      updateView();
     }
 
-    async function loadAllData() {
+    function loadDashboard() {
       fetchBatches();
       fetchAlerts();
+      fetchLogs();
+    }
+
+    async function handleQuickCheck() {
+      const query = document.getElementById("quick-check-input").value.trim();
+      if (!query) return;
+
+      const res = await fetch(`/api/inventory/summary?search=${encodeURIComponent(query)}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      const out = document.getElementById("quick-check-result");
+      out.classList.remove("hidden");
+
+      if (data.length === 0) {
+        out.className = "mt-3 text-xs p-3 rounded-lg bg-indigo-800/80 text-amber-200";
+        out.innerText = `❌ No inventory found matching "${query}".`;
+        return;
+      }
+
+      const item = data[0];
+      if (item.sellable_stock > 0) {
+        out.className = "mt-3 text-xs p-3 rounded-lg bg-emerald-950/80 border border-emerald-500 text-emerald-200";
+        out.innerText = `✅ IN STOCK: We have ${item.sellable_stock} sellable in-date units of "${item.medicine_name}". (${item.expired_stock} expired units quarantined).`;
+      } else {
+        out.className = "mt-3 text-xs p-3 rounded-lg bg-rose-950/80 border border-rose-500 text-rose-200";
+        out.innerText = `❌ NO IN-DATE UNITS: "${item.medicine_name}" has 0 sellable units (${item.expired_stock} units in inventory are expired).`;
+      }
     }
 
     async function fetchBatches() {
       if (!token) return;
-      const s = document.getElementById('search-input').value;
-      const sortBy = document.getElementById('sort-by').value;
-      const order = document.getElementById('sort-order').value;
+      const q = document.getElementById("search-input").value;
+      const sort = document.getElementById("sort-by").value;
+      const order = document.getElementById("sort-order").value;
 
-      const res = await fetch(`/api/batches?search=${encodeURIComponent(s)}&sort_by=${sortBy}&order=${order}&page=${currentPage}&limit=5`, {
+      const res = await fetch(`/api/batches?search=${encodeURIComponent(q)}&sort_by=${sort}&order=${order}&page=${currentPage}&limit=5`, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       if (res.status === 401) return logout();
       const data = await res.json();
 
-      const tbody = document.getElementById('batch-table-body');
-      tbody.innerHTML = '';
-      const today = new Date().toISOString().split('T')[0];
+      const tbody = document.getElementById("batch-table-body");
+      tbody.innerHTML = "";
+      const today = new Date().toISOString().split("T")[0];
 
-      data.items.forEach(b => {
-        const isExp = b.expiry_date <= today;
-        tbody.innerHTML += `
-          <tr class="${isExp ? 'bg-rose-50 text-rose-800' : ''}">
-            <td class="p-3 font-semibold">${b.medicine_name}</td>
-            <td class="p-3 font-mono">${b.batch_code}</td>
-            <td class="p-3">${b.quantity}</td>
-            <td class="p-3">${b.expiry_date}</td>
-            <td class="p-3">
-              <span class="px-2 py-0.5 rounded text-xs ${isExp ? 'bg-rose-200 text-rose-900 font-bold' : 'bg-emerald-100 text-emerald-800'}">
-                ${isExp ? 'EXPIRED' : 'SELLABLE'}
-              </span>
-            </td>
-          </tr>
-        `;
-      });
+      if (data.items.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No batches match the query.</td></tr>`;
+      } else {
+        data.items.forEach(b => {
+          const isExp = b.expiry_date <= today;
+          tbody.innerHTML += `
+            <tr class="${isExp ? 'bg-rose-50/50' : ''}">
+              <td class="p-3 font-semibold text-slate-800">${b.medicine_name}</td>
+              <td class="p-3 font-mono text-xs">${b.batch_code}</td>
+              <td class="p-3">${b.quantity}</td>
+              <td class="p-3">${b.expiry_date}</td>
+              <td class="p-3">
+                <span class="px-2 py-0.5 rounded text-xs ${isExp ? 'bg-rose-200 text-rose-800 font-bold' : 'bg-emerald-100 text-emerald-800'}">
+                  ${isExp ? 'EXPIRED' : 'SELLABLE'}
+                </span>
+              </td>
+            </tr>
+          `;
+        });
+      }
 
       totalPages = data.pages || 1;
-      document.getElementById('page-info').innerText = `Page ${data.page} of ${totalPages}`;
-      document.getElementById('prev-page').disabled = (currentPage <= 1);
-      document.getElementById('next-page').disabled = (currentPage >= totalPages);
+      document.getElementById("page-info").innerText = `Page ${data.page} of ${totalPages}`;
+      document.getElementById("prev-page").disabled = (currentPage <= 1);
+      document.getElementById("next-page").disabled = (currentPage >= totalPages);
     }
 
     function changePage(d) {
@@ -265,77 +369,116 @@
     }
 
     function debounceFetch() {
-      clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(() => { currentPage = 1; fetchBatches(); }, 250);
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => { currentPage = 1; fetchBatches(); }, 250);
     }
 
     async function handleAddBatch(e) {
       e.preventDefault();
       const body = {
-        medicine_name: document.getElementById('b-name').value,
-        batch_code: document.getElementById('b-code').value,
-        quantity: parseInt(document.getElementById('b-qty').value),
-        expiry_date: document.getElementById('b-exp').value
+        medicine_name: document.getElementById("b-name").value,
+        batch_code: document.getElementById("b-code").value,
+        quantity: parseInt(document.getElementById("b-qty").value),
+        expiry_date: document.getElementById("b-exp").value
       };
-      const res = await fetch('/api/batches', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+
+      const res = await fetch("/api/batches", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(body)
       });
+
       if (res.ok) {
-        alert("Batch registered!");
-        loadAllData();
+        const msg = document.getElementById("batch-add-msg");
+        msg.innerText = `Added batch ${body.batch_code} for ${body.medicine_name}`;
+        msg.classList.remove("hidden");
+        setTimeout(() => msg.classList.add("hidden"), 3000);
+        document.getElementById("b-name").value = "";
+        document.getElementById("b-code").value = "";
+        document.getElementById("b-qty").value = "";
+        document.getElementById("b-exp").value = "";
+        loadDashboard();
       }
     }
 
     async function handleDispense(e) {
       e.preventDefault();
       const body = {
-        medicine_name: document.getElementById('d-name').value,
-        quantity: parseInt(document.getElementById('d-qty').value)
+        medicine_name: document.getElementById("d-name").value,
+        quantity: parseInt(document.getElementById("d-qty").value)
       };
-      const res = await fetch('/api/dispense', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+
+      const res = await fetch("/api/dispense", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify(body)
       });
       const data = await res.json();
-      const out = document.getElementById('dispense-result');
-      out.classList.remove('hidden');
+      const out = document.getElementById("dispense-result");
+      out.classList.remove("hidden");
+
       if (!res.ok) {
-        out.className = "mt-2 text-xs font-mono p-2 bg-rose-100 text-rose-800 rounded";
-        out.innerText = data.detail;
+        out.className = "mt-3 text-xs font-mono p-3 bg-rose-100 text-rose-800 rounded";
+        out.innerText = `⚠️ Error: ${data.detail}`;
       } else {
-        out.className = "mt-2 text-xs font-mono p-2 bg-emerald-100 text-emerald-800 rounded";
-        out.innerText = `Dispensed: ${JSON.stringify(data.breakdown, null, 2)}`;
-        loadAllData();
+        out.className = "mt-3 text-xs font-mono p-3 bg-emerald-100 text-emerald-800 rounded";
+        out.innerText = `✅ Success: Dispensed from batches:\n${JSON.stringify(data.breakdown, null, 2)}`;
+        loadDashboard();
       }
     }
 
     async function fetchAlerts() {
       if (!token) return;
-      const res = await fetch('/api/alerts/expiring-soon?days=30', {
+      const res = await fetch("/api/alerts/expiring-soon?days=30", {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
-      const container = document.getElementById('alerts-container');
-      const list = document.getElementById('alerts-list');
-      list.innerHTML = '';
+      const container = document.getElementById("alerts-container");
+      const list = document.getElementById("alerts-list");
+      list.innerHTML = "";
+
       if (data.length > 0) {
-        container.classList.remove('hidden');
+        container.classList.remove("hidden");
         data.forEach(a => {
           list.innerHTML += `
-            <div class="bg-amber-100 p-2 rounded">
-              <strong>${a.medicine_name}</strong> (${a.quantity} left)<br>
-              Batch: ${a.batch_code} | Exp: ${a.expiry_date}
+            <div class="bg-amber-100 p-2.5 rounded border border-amber-200">
+              <div class="font-bold text-slate-800">${a.medicine_name}</div>
+              <div>Batch: <strong>${a.batch_code}</strong> (${a.quantity} units)</div>
+              <div class="text-amber-800 font-semibold">Expires: ${a.expiry_date}</div>
             </div>
           `;
         });
       } else {
-        container.classList.add('hidden');
+        container.classList.add("hidden");
       }
     }
-    if (token) loadAllData();
+
+    async function fetchLogs() {
+      if (!token) return;
+      const res = await fetch("/api/dispense/logs?limit=5", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const logs = await res.json();
+      const tbody = document.getElementById("logs-table-body");
+      tbody.innerHTML = "";
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-3 text-center text-slate-400">No dispense logs yet.</td></tr>`;
+      } else {
+        logs.forEach(l => {
+          tbody.innerHTML += `
+            <tr>
+              <td class="p-2 text-slate-500">${l.dispensed_at}</td>
+              <td class="p-2 font-semibold text-slate-800">${l.medicine_name}</td>
+              <td class="p-2 font-mono">${l.batch_code}</td>
+              <td class="p-2 font-bold text-indigo-600">${l.units_dispensed}</td>
+            </tr>
+          `;
+        });
+      }
+    }
+
+    // Initialize state
+    updateView();
   </script>
 </body>
 </html>

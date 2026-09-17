@@ -46,9 +46,9 @@ def init_db():
         """)
 init_db()
 
-# --- AUTH UTILS (Pure Python 3.13 Compatible) ---
+# --- AUTH UTILS ---
 def hash_pw(pw: str) -> str:
-    return hashlib.sha256(pw.encode('utf-8')).hexdigest()
+    return hashlib.sha256(pw.encode("utf-8")).hexdigest()
 
 def verify_pw(pw: str, hashed: str) -> bool:
     return hash_pw(pw) == hashed
@@ -224,6 +224,17 @@ def get_alerts(days: int = 30, user: str = Depends(get_current_user)):
             WHERE expiry_date > ? AND expiry_date <= ? AND quantity > 0
             ORDER BY expiry_date ASC
         """, (today_str, cutoff)).fetchall()
+    return [dict(r) for r in rows]
+
+@app.get("/api/dispense/logs")
+def get_dispense_logs(limit: int = 10, user: str = Depends(get_current_user)):
+    with get_db() as conn:
+        rows = conn.execute("""
+            SELECT id, batch_code, medicine_name, units_dispensed, dispensed_at
+            FROM dispense_logs
+            ORDER BY id DESC
+            LIMIT ?
+        """, (limit,)).fetchall()
     return [dict(r) for r in rows]
 
 # Static frontend mount
